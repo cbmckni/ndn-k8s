@@ -40,11 +40,17 @@ Check that the `nfs` storage class exists:
 
 Edit the .yaml files. Make sure that the names and resource requests are correct and compatible. 
 
+## Deployment
+
+To deploy the PVC(if needed), run `kubectl create -f pvc.yaml`
+
+To deploy NDN, run `kubectl create -f deployment.yaml`
+
 ## Usage
 
 Use 'kubectl get pods' to be sure your container is running properly.
 
-To get an interactive terminal as root, use 'kubectl exec -it ${POD} -- /bin/bash'
+To get an interactive terminal as root, use `kubectl exec -it ${POD} -- /bin/bash`
 
 ## Delete
 
