@@ -9,12 +9,16 @@ spec:
   selector:
     matchLabels:
       app: ndn-k8s
+  template:
+    metadata:
+      labels:
+        app: ndn-k8s
     spec:
       containers:               
-      - name: dtp-ndn
+      - name: ndn-k8s
         image: dereddick/ndn-docker
         command: [ "/bin/bash", "-c", "--" ]
-        args: [ "'/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1' && tail -f /dev/null" ]
+        args: [ "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null" ]
         resources:
           requests:
             cpu: 1
@@ -29,6 +33,6 @@ spec:
       volumes:
         - name: vol-1
           persistentVolumeClaim:
-            claimName: ndn-pvc
+            claimName: ndn-pvc # Enter valid PVC
 
 
