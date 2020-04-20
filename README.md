@@ -22,6 +22,10 @@ The K8s cluster MUST have either a valid PVC or storage class. If a valid PVC do
 
 Install [Helm](https://helm.sh/docs/intro/install/)
 
+Add the "stable" repository:
+
+`helm repo add stable https://kubernetes-charts.storage.googleapis.com`
+
 Update Helm's repositories(similar to `apt-get update)`:
 
 `helm repo update`
