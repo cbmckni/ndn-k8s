@@ -16,7 +16,7 @@ spec:
     spec:
       containers:               
       - name: ndn-k8s
-        image: dereddick/ndn-docker
+        image: cbmckni/ndn-tools
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null" ]
         resources:
@@ -33,6 +33,6 @@ spec:
       volumes:
         - name: vol-1
           persistentVolumeClaim:
-            claimName: ndn-pvc # Enter valid PVC
+            claimName: scidas-dev # Enter valid PVC
 
 

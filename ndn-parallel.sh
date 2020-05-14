@@ -31,7 +31,7 @@ while read line; do
   echo $line
   cat >> ndn-parallel.yaml <<EOF
       - name: ndn-k8s-${COUNTER}
-        image: dereddick/ndn-docker
+        image: cbmckni/ndn-tools
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "nfd && nfdc face create ${URL} && nfdc route add ${ROUTE} ${URL} && ndncatchunks ${line} > $(basename -- ${line})" ]
         resources:
