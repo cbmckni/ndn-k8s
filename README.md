@@ -44,6 +44,8 @@ Check that the `nfs` storage class exists:
 
 Edit the .yaml files. Make sure that the names and resource requests are correct and compatible. 
 
+**Make sure the PVC defined in deployment.yaml is valid.**
+
 ## Deployment
 
 To deploy the PVC(if needed), run `kubectl create -f pvc.yaml`
