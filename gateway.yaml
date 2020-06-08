@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ndn-k8s
+  name: ndn-k8s-gateway
   labels:
-    app: ndn-k8s
+    app: ndn-k8s-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ndn-k8s
+      app: ndn-k8s-gateway
   template:
     metadata:
       labels:
-        app: ndn-k8s
+        app: ndn-k8s-gateway
     spec:
       containers:               
-      - name: ndn-k8s
+      - name: ndn-k8s-gateway
         image: cbmckni/ndn-tools
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null" ]
@@ -33,6 +33,18 @@ spec:
       volumes:
         - name: vol-1
           persistentVolumeClaim:
-            claimName: scidas-dev # Enter valid PVC
-
-
+            claimName: rodeo-ceph # Enter valid PVC
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ndn-k8s-gateway
+  labels:
+    app: ndn-k8s-gateway
+spec:
+  type: ClusterIP
+  selector:
+    app: ndn-k8s-gateway
+  ports:
+  - port: 6363
+    targetPort: 6363
