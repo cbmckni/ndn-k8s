@@ -22,10 +22,10 @@ spec:
         resources:
           requests:
             cpu: 1
-            memory: 4Gi
+            memory: 8Gi
           limits:
             cpu: 1
-            memory: 4Gi
+            memory: 8Gi
         volumeMounts:
         - name: vol-1
           mountPath: /workspace
@@ -33,6 +33,6 @@ spec:
       volumes:
         - name: vol-1
           persistentVolumeClaim:
-            claimName: rodeo-ceph # Enter valid PVC
+            claimName: scidas-dev # Enter valid PVC
 
 
