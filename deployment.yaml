@@ -26,6 +26,8 @@ spec:
           limits:
             cpu: 1
             memory: 4Gi
+        ports:
+        - containerPort: 8080
         volumeMounts:
         - name: vol-1
           mountPath: /workspace
@@ -34,5 +36,19 @@ spec:
         - name: vol-1
           persistentVolumeClaim:
             claimName: scidas-dev # Enter valid PVC
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ndn-k8s
+  labels:
+    app: ndn-k8s
+spec:
+  type: ClusterIP
+  selector:
+    app: ndn-k8s
+  ports:
+  - port: 8080
+    targetPort: 8080
 
 
