@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.Deployment.Name }}
+  labels:
+    app: {{ .Values.Deployment.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.Deployment.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.Deployment.Name }}
+    spec:
+      containers:               
+      - name: {{ .Values.Deployment.Name }}
+        image: {{ .Values.Deployment.Image }}
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null" ]
+        resources:
+          requests:
+            cpu: {{ .Values.Resources.Requests.CPU }}
+            memory: {{ .Values.Resources.Requests.Memory }}
+          limits:
+            cpu: {{ .Values.Resources.Limits.CPU }}
+            memory: {{ .Values.Resources.Limits.Memory }}
+        volumeMounts:
+        - name: vol-1
+          mountPath: {{ template "pvcPath" . }}
+      nodeSelector:
+          kubernetes.io/hostname: {{ .Values.Deployment.Host }}
+      restartPolicy: Always
+      volumes:
+        - name: vol-1
+          persistentVolumeClaim:
+            claimName: {{ template "pvcName" . }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.Deployment.Name }}
+  labels:
+    app: {{ .Values.Deployment.Name }}
+    chart: {{ template "ndn-k8s.chart" . }}
+    release: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.Deployment.Name }}
+  ports:
+  - port: 6363
+    targetPort: 6363
+---
+{{ if .Values.NewPVC.Enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.NewPVC.Name }}
+  labels:
+    app: {{ .Values.Deployment.Name }}
+    chart: {{ template "ndn-k8s.chart" . }}
+    release: {{ .Release.Name }}
+    instance: {{ .Values.Instance }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.NewPVC.StorageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.NewPVC.Size }}
+{{ end }}
+    
+
+# Variables
+
+{{- define "pvcPath" -}}
+{{- if .Values.NewPVC.Enabled }}{{ .Values.NewPVC.Path }}{{ else }}{{ .Values.ExistingPVC.Path }}{{ end }}
+{{- end -}}
+
+{{- define "pvcName" -}}
+{{- if .Values.NewPVC.Enabled }}{{ .Values.NewPVC.Name }}{{ else }}{{ .Values.ExistingPVC.Name }}{{ end }}
+{{- end -}}

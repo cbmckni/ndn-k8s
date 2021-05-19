@@ -1,0 +1,41 @@
+# Declare variables to be passed into your templates.
+
+
+# Deployment Settings
+
+Deployment:
+  Name: ndn-k8s-test
+  Image: cbmckni/ndn-tools
+  Host: epic001.clemson.edu
+
+
+
+# Resource Requests
+
+Resources:
+  Requests:
+    CPU: 1
+    Memory: 4Gi
+  Limits:
+    CPU: 1
+    Memory: 4Gi
+
+
+
+# PVC Settings
+
+ExistingPVC:
+  # If true, use existing PVC on local cluster.
+  Enabled: true
+  Name: deepgtex-prp
+  Path: /workspace
+
+NewPVC:
+  # If true, create new PVC on local cluster.
+  Enabled: false
+  Name: ndn-k8s-pvc-test
+  StorageClass: nfs # Make sure storage class provisioner exists!
+  Path: /workspace
+
+
+
