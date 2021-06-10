@@ -4,9 +4,11 @@
 # Deployment Settings
 
 Deployment:
-  Name: ndn-k8s-test
+  Name: ndn-k8s-test-cole
   Image: cbmckni/ndn-tools
-  Host: epic001.clemson.edu
+  Host: true
+  Hostname: epic001.clemson.edu
+  Replicas: 1
 
 
 
@@ -34,6 +36,7 @@ NewPVC:
   # If true, create new PVC on local cluster.
   Enabled: false
   Name: ndn-k8s-pvc-test
+  Size: 50Gi
   StorageClass: nfs # Make sure storage class provisioner exists!
   Path: /workspace
 

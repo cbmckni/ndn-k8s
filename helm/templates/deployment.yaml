@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Values.Deployment.Name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.Deployment.Replicas }}
   selector:
     matchLabels:
       app: {{ .Values.Deployment.Name }}
@@ -29,8 +29,10 @@ spec:
         volumeMounts:
         - name: vol-1
           mountPath: {{ template "pvcPath" . }}
+      {{ if .Values.Deployment.Host }} 
       nodeSelector:
-          kubernetes.io/hostname: {{ .Values.Deployment.Host }}
+          kubernetes.io/hostname: {{ .Values.Deployment.Hostname }}
+      {{ end }}
       restartPolicy: Always
       volumes:
         - name: vol-1
