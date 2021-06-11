@@ -18,7 +18,7 @@ spec:
       - name: {{ .Values.Deployment.Name }}
         image: {{ .Values.Deployment.Image }}
         command: [ "/bin/bash", "-c", "--" ]
-        args: [ "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null" ]
+        args: [ {{ .Values.Deployment.Arg }} ]
         resources:
           requests:
             cpu: {{ .Values.Resources.Requests.CPU }}
@@ -55,6 +55,26 @@ spec:
   - port: 6363
     targetPort: 6363
 ---
+{{ if .Values.Ingress.Enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.Deployment.Name }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: ""
+    kubernetes.io/ingress.class: {{ .Values.Ingress.Class }}
+spec:
+  rules:
+  - host: {{ .Values.Ingress.Host }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.Deployment.Name }}
+          servicePort: 6363
+
+---
+{{ end }}
 {{ if .Values.NewPVC.Enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1

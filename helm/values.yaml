@@ -4,13 +4,15 @@
 # Deployment Settings
 
 Deployment:
-  Name: ndn-k8s-test-cole
+  Name: ndn-k8s-test
   Image: cbmckni/ndn-tools
-  Host: true
+  Host: false # deploy to specific host vs "random"
   Hostname: epic001.clemson.edu
   Replicas: 1
-
-
+  Arg: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null"
+# EXAMPLE PRODUCER: "/usr/local/bin/nfd -c /workspace/nfd/nfd-producer.conf > $LOG_FILE 2>&1 && ndnputchunks /k8s/1GB < /workspace/1GB && ndnputchunks /k8s/5GB < /workspace/5GB && tail -f /dev/null"
+# EXAMPLE CONSUMER: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && nfdc face create tcp4://ndn-k8s-put1GB-cole && nfdc route add /k8s tcp4://ndn-k8s-put1GB-cole && ndncatchuncks /k8s/1GB > /tmp/1GB.tmp && tail -f /dev/null"
+# EXAMPLE MANUAL: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null"
 
 # Resource Requests
 
@@ -41,4 +43,12 @@ NewPVC:
   Path: /workspace
 
 
+
+# Ingress control settings
+Ingress:
+  Enabled: false
+  # The subdomain to associate with this service.
+  Host: ndnlakev1.nautilus.optiputer.net
+  # The class of the ingress controller to use.
+  Class: traefik
 
