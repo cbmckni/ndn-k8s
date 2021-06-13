@@ -1,0 +1,51 @@
+# Declare variables to be passed into your templates.
+
+
+# Deployment Settings
+
+Deployment:
+  Name: ndn-k8s-test
+  Image: cbmckni/ndn-tools
+  Host: false # deploy to specific host vs "random"
+  Hostname: epic001.clemson.edu
+  Replicas: 5
+  Arg: "/usr/local/bin/nfd -c /workspace/nfd/nfd-producer.conf > $LOG_FILE 2>&1 && ndnputchunks /k8s/1GB < /workspace/1GB && ndnputchunks /k8s/5GB < /workspace/5GB && tail -f /dev/null"
+
+# Resource Requests
+
+Resources:
+  Requests:
+    CPU: 2
+    Memory: 8Gi
+  Limits:
+    CPU: 2
+    Memory: 8Gi
+
+
+
+# PVC Settings
+
+ExistingPVC:
+  # If true, use existing PVC on local cluster.
+  Enabled: true
+  Name: deepgtex-prp
+  Path: /workspace
+
+NewPVC:
+  # If true, create new PVC on local cluster.
+  Enabled: false
+  Name: ndn-k8s-pvc-test
+  Size: 50Gi
+  StorageClass: nfs # Make sure storage class provisioner exists!
+  Path: /workspace
+
+
+
+# Ingress control settings
+Ingress:
+  Enabled: true
+  # The subdomain to associate with this service.
+  Host: ndnlakev1.nautilus.optiputer.net
+  # The class of the ingress controller to use.
+  Class: traefik
+
