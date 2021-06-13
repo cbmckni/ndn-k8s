@@ -60,7 +60,7 @@ To deploy the PVC(if needed), run `kubectl create -f pvc.yaml`
 
 # Method 1: kubectl 
 
-Using Helm is recommended, but here are instructions to deploy an NDN consumer using 
+Using Helm is recommended, but here are instructions to deploy an NDN consumer using `kubectl`.
 
 ## Configuration
 
