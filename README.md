@@ -74,7 +74,7 @@ To deploy NDN, run `kubectl create -f endpoint.yaml`
 
 ## Delete
 
-To delete the deployment/pvc, simply run `kubectl delete -f deployment.yaml` and `kubectl delete -f pvc.yaml`
+To delete the deployment/pvc, simply run `kubectl delete -f endpoint.yaml` and `kubectl delete -f pvc.yaml`
 
 # Method 2: Helm(recommended)
 
