@@ -4,14 +4,14 @@
 # Deployment Settings
 
 Deployment:
-  Name: ndn-k8s-sample-node
+  Name: ndn-k8s-producer
   Image: cbmckni/ndn-tools
-  Host: false # deploy to specific host vs "random"
+  Host: true # deploy to specific host vs "random"
   Hostname: epic001.clemson.edu
   Replicas: 1
-  Arg: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null"
-# EXAMPLE PRODUCER: "/usr/local/bin/nfd -c /workspace/ndn/config/producer.conf > $LOG_FILE 2>&1 && ./workspace/ndn/scripts/put.sh /k8s/1GB /workspace/ndn/samples/1GB && tail -f /dev/null"
-# EXAMPLE CONSUMER: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && ./workspace/ndn/scripts/cat.sh PRODUCER_NAME /k8s/1GB /workspace/ndn/output/1GB.tmp"
+  Arg: "/usr/local/bin/nfd -c /workspace/ndn/config/producer.conf > $LOG_FILE 2>&1 && ./workspace/ndn/scripts/put.sh /k8s/1GB /workspace/ndn/samples/1GB"
+# EXAMPLE PRODUCER: "/usr/local/bin/nfd -c /workspace/ndn/config/producer.conf > $LOG_FILE 2>&1 && ./workspace/ndn/scripts/put.sh /k8s/1GB /workspace/ndn/samples/1GB"
+# EXAMPLE CONSUMER: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && ./workspace/ndn/scripts/cat.sh PRODUCER_NAME /k8s/1GB /workspace/ndn/samples/1GB"
 # EXAMPLE MANUAL: "/usr/local/bin/nfd -c $CONFIG > $LOG_FILE 2>&1 && tail -f /dev/null"
 
 # Resource Requests
