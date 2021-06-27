@@ -11,8 +11,8 @@ Deployment:
   Hostname: epic001.clemson.edu
   Replicas: 1
   Arg: "/workspace/ndn/scripts/nfd.boot.sh && /workspace/ndn/scripts/delay.sh"
-# EXAMPLE PRODUCER: "/workspace/ndn/scripts/nfd.boot.sh /workspace/ndn/config/producer.config && /workspace/ndn/scripts/put.sh /k8s/1GB /workspace/ndn/samples/1GB"
-# EXAMPLE CONSUMER: "/workspace/ndn/scripts/nfd.boot.sh && /workspace/ndn/scripts/cat.sh PRODUCER_NAME /k8s/1GB /workspace/ndn/output/1GB.test"
+# EXAMPLE PRODUCER: "/workspace/ndn/scripts/nfd.boot.sh && /workspace/ndn/scripts/put.sh /k8s/1gb /workspace/ndn/samples/1GB"
+# EXAMPLE CONSUMER: "/workspace/ndn/scripts/nfd.boot.sh && /workspace/ndn/scripts/cat.sh PRODUCER_NAME /k8s/1gb /workspace/ndn/output/1GB.test"
 # EXAMPLE MANUAL: "/workspace/ndn/scripts/nfd.boot.sh && /workspace/ndn/scripts/delay.sh"
 
 
