@@ -5,30 +5,30 @@
 # Deployment Settings
 
 Deployment:
-  Name: ndn-k8s-sample
+  Name: ndn-k8s-node
   Image: cbmckni/ndn-tools
   Host: false # deploy to specific host vs "random"
-  Hostname: epic001.clemson.edu
+  Hostname: suncave-11
   Replicas: 1
   Arg: "
-    /workspace/ndn/scripts/nfd.boot.sh &&
+    /workspace/ndn/scripts/boot.sh &&
     /workspace/ndn/scripts/delay.sh
   "
 
 # EXAMPLE PRODUCER: "
-# /workspace/ndn/scripts/nfd.boot.sh &&
+# /workspace/ndn/scripts/boot.sh &&
 # /workspace/ndn/scripts/put.sh /k8s/pub/file /workspace/ndn/samples/1GB
 # "
 
 # EXAMPLE CONSUMER: "
-# /workspace/ndn/scripts/nfd.boot.sh &&
+# /workspace/ndn/scripts/boot.sh &&
 # /workspace/ndn/scripts/route.sh / PRODUCER_NAME &&
 # /workspace/ndn/scripts/cat.sh -n /k8s/pub/file -o /workspace/ndn/output/1GB.test -t /workspace/ndn/times/sample_tests &&
 # /workspace/ndn/scripts/delay.sh
 # "
 
 # EXAMPLE MANUAL: "
-# /workspace/ndn/scripts/nfd.boot.sh &&
+# /workspace/ndn/scripts/boot.sh &&
 # /workspace/ndn/scripts/delay.sh
 # "
 
