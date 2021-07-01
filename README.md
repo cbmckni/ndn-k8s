@@ -58,6 +58,12 @@ Check that the `nfs` storage class exists:
 
 To deploy the PVC(if needed), run `kubectl create -f pvc.yaml`
 
+### Copy Execution Scripts to PVC
+
+The standard deployment types use predefined [scripts](https://github.com/cbmckni/ndn-k8s/tree/master/genomics/scripts). These scripts need to be moved to the PVC so the deployed containers can execute them. To do so:
+
+`./kube-load.sh <PVC_NAME> genomics/scripts /workspace/ndn`
+
 # Method 1: kubectl 
 
 Using Helm is recommended, but here are instructions to deploy an NDN consumer using `kubectl`.
