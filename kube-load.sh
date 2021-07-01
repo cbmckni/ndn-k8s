@@ -3,12 +3,12 @@
 
 # parse command-line arguments
 if [[ $# != 2 ]]; then
-	echo "usage: $0 <pvc-name> <local-path>"
+	echo "usage: $0 <pvc-name> <local-path> <pvc-path>"
 	exit -1
 fi
 
 PVC_NAME="$1"
-PVC_PATH="/workspace"
+PVC_PATH="$2"
 POD_FILE="pod.yaml"
 POD_NAME="${USER}-load-$(printf %04x ${RANDOM})"
 LOCAL_PATH="$(realpath $2)"
@@ -25,7 +25,7 @@ spec:
     image: ubuntu
     args: ["sleep", "infinity"]
     volumeMounts:
-    - mountPath: ${PVC_PATH}
+    - mountPath: /workspace
       name: ${PVC_NAME}
   restartPolicy: Never
   volumes:
@@ -48,8 +48,8 @@ done
 # copy input data to pod
 echo "copying data..."
 
-kubectl exec ${POD_NAME} -- bash -c "mkdir -p ${PVC_PATH}/${USER}"
-kubectl cp "${LOCAL_PATH}" "${POD_NAME}:${PVC_PATH}/${USER}/$(basename ${LOCAL_PATH})"
+kubectl exec ${POD_NAME} -- bash -c "mkdir -p ${PVC_PATH}"
+kubectl cp "${LOCAL_PATH}" "${POD_NAME}:${PVC_PATH}/$(basename ${LOCAL_PATH})"
 
 # delete pod
 kubectl delete -f ${POD_FILE}
