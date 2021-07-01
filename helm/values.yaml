@@ -8,7 +8,7 @@ Deployment:
   Name: ndn-k8s-node
   Image: cbmckni/ndn-tools
   Host: false # deploy to specific host vs "random"
-  Hostname: suncave-11
+  Hostname: suncave-0
   Replicas: 1
   Arg: "
     /workspace/ndn/scripts/boot.sh &&
@@ -52,7 +52,7 @@ Resources:
 ExistingPVC:
   # If true, use existing PVC on local cluster.
   Enabled: true
-  Name: deepgtex-prp
+  Name: genome-lake
   Path: /workspace
 
 NewPVC:
