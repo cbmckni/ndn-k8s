@@ -16,9 +16,6 @@ Deployment:
     apt-get update -y && apt-get install -y git && \
     git clone --single-branch --branch statefulset https://github.com/cbmckni/ndn-k8s.git /workspace/ndn && \
     /workspace/ndn/genomics/scripts/sync.sh ndn-k8s-example && \
-    /workspace/ndn/genomics/scripts/boot.sh && \
-    /workspace/ndn/genomics/scripts/route.sh / ndn-k8s-producer-1gb && \
-    /workspace/ndn/genomics/scripts/cat.sh -n /k8s/1gb -o /workspace/ndn/1GB.test -t /workspace/ndn/1GB.test.time && \
     /workspace/ndn/genomics/scripts/delay.sh
   "
 
@@ -28,11 +25,15 @@ Deployment:
 # "
 
 # EXAMPLE CONSUMER: "
-# /workspace/ndn/scripts/boot.sh &&
-# /workspace/ndn/scripts/route.sh / PRODUCER_NAME &&
-# /workspace/ndn/scripts/cat.sh -n /k8s/pub/file -o /workspace/ndn/output/1GB.test -t /workspace/ndn/times/sample_tests &&
-# /workspace/ndn/scripts/delay.sh
-# "
+#    rm -rf /workspace/ndn && mkdir -p /workspace/ndn && \
+#    apt-get update -y && apt-get install -y git && \
+#    git clone --single-branch --branch statefulset https://github.com/cbmckni/ndn-k8s.git /workspace/ndn && \
+#    /workspace/ndn/genomics/scripts/sync.sh ndn-k8s-example && \
+#    /workspace/ndn/genomics/scripts/boot.sh && \
+#    /workspace/ndn/genomics/scripts/route.sh / ndn-k8s-producer-1gb && \
+#    /workspace/ndn/genomics/scripts/cat.sh -n /k8s/1gb -o /workspace/ndn/1GB.test -t /workspace/ndn/1GB.test.time && \
+#    /workspace/ndn/genomics/scripts/delay.sh
+#  "
 
 # EXAMPLE MANUAL: "
 # /workspace/ndn/scripts/boot.sh &&
