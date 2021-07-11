@@ -12,12 +12,11 @@ Deployment:
     Arg: "kubernetes.io/hostname: epic001.clemson.edu" 
   Replicas: 3
   Arg: "
-    mkdir -p /workspace/ndn && \
-    apt-get update -y && apt-get install git && \
+    rm -rf /workspace/ndn && mkdir -p /workspace/ndn && \
+    apt-get update -y && apt-get install -y git && \
     git clone --single-branch --branch statefulset https://github.com/cbmckni/ndn-k8s.git /workspace/ndn && \
-    /workspace/ndn/scripts/boot.sh && \
-    /workspace/ndn/scripts/delay.sh 10 && \
-    /workspace/ndn/scripts/sync.sh ndn-k8s-example
+    /workspace/ndn/genomics/scripts/boot.sh && \
+    tail -f /dev/null
   "
 
 # EXAMPLE PRODUCER: "

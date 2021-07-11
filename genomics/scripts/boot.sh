@@ -39,4 +39,4 @@ done
 shift $((OPTIND-1))
 
 /usr/local/bin/nfd -c $config > $logfile 2>&1 &
-/workspace/ndn/scripts/delay.sh 3
+sleep 3
