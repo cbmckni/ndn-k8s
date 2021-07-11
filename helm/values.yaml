@@ -10,13 +10,16 @@ Deployment:
   NodeSelector: 
     Enabled: false
     Arg: "kubernetes.io/hostname: epic001.clemson.edu" 
-  Replicas: 3
+  Replicas: 10
   Arg: "
     rm -rf /workspace/ndn && mkdir -p /workspace/ndn && \
     apt-get update -y && apt-get install -y git && \
     git clone --single-branch --branch statefulset https://github.com/cbmckni/ndn-k8s.git /workspace/ndn && \
+    /workspace/ndn/genomics/scripts/sync.sh ndn-k8s-example && \
     /workspace/ndn/genomics/scripts/boot.sh && \
-    tail -f /dev/null
+    /workspace/ndn/genomics/scripts/route.sh / ndn-k8s-producer-1gb && \
+    /workspace/ndn/genomics/scripts/cat.sh -n /k8s/1gb -o /workspace/ndn/1GB.test -t /workspace/ndn/1GB.test.time && \
+    /workspace/ndn/genomics/scripts/delay.sh
   "
 
 # EXAMPLE PRODUCER: "
