@@ -1,10 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.Deployment.Name }}
+  labels:
+    app: {{ .Values.Deployment.Name }}
+    chart: {{ template "ndn-k8s.chart" . }}
+    release: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.Deployment.Name }}
+  ports:
+  - port: 6363
+    targetPort: 6363
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.Deployment.Name }}
   labels:
     app: {{ .Values.Deployment.Name }}
 spec:
+  serviceName: {{ .Values.Deployment.Name }}
   replicas: {{ .Values.Deployment.Replicas }}
   selector:
     matchLabels:
@@ -27,33 +44,22 @@ spec:
             cpu: {{ .Values.Resources.Limits.CPU }}
             memory: {{ .Values.Resources.Limits.Memory }}
         volumeMounts:
-        - name: vol-1
-          mountPath: {{ template "pvcPath" . }}
-      {{ if .Values.Deployment.Host }} 
+        - name: {{ .Values.Deployment.Name }}-pvc
+          mountPath: /workspace
+      {{ if .Values.Deployment.NodeSelector.Enabled }} 
       nodeSelector:
-          kubernetes.io/hostname: {{ .Values.Deployment.Hostname }}
+        {{ .Values.Deployment.NodeSelector.Arg }}
       {{ end }}
       restartPolicy: Always
-      volumes:
-        - name: vol-1
-          persistentVolumeClaim:
-            claimName: {{ template "pvcName" . }}
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: {{ .Values.Deployment.Name }}
-  labels:
-    app: {{ .Values.Deployment.Name }}
-    chart: {{ template "ndn-k8s.chart" . }}
-    release: {{ .Release.Name }}
-spec:
-  type: ClusterIP
-  selector:
-    app: {{ .Values.Deployment.Name }}
-  ports:
-  - port: 6363
-    targetPort: 6363
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.Deployment.Name }}-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.PVC.StorageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.PVC.Storage }}
 ---
 {{ if .Values.Ingress.Enabled }}
 apiVersion: extensions/v1beta1
@@ -72,35 +78,4 @@ spec:
         backend:
           serviceName: {{ .Values.Deployment.Name }}
           servicePort: 6363
-
----
 {{ end }}
-{{ if .Values.NewPVC.Enabled }}
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: {{ .Values.NewPVC.Name }}
-  labels:
-    app: {{ .Values.Deployment.Name }}
-    chart: {{ template "ndn-k8s.chart" . }}
-    release: {{ .Release.Name }}
-    instance: {{ .Values.Instance }}
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: {{ .Values.NewPVC.StorageClass }}
-  resources:
-    requests:
-      storage: {{ .Values.NewPVC.Size }}
-{{ end }}
-    
-
-# Variables
-
-{{- define "pvcPath" -}}
-{{- if .Values.NewPVC.Enabled }}{{ .Values.NewPVC.Path }}{{ else }}{{ .Values.ExistingPVC.Path }}{{ end }}
-{{- end -}}
-
-{{- define "pvcName" -}}
-{{- if .Values.NewPVC.Enabled }}{{ .Values.NewPVC.Name }}{{ else }}{{ .Values.ExistingPVC.Name }}{{ end }}
-{{- end -}}

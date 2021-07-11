@@ -5,14 +5,19 @@
 # Deployment Settings
 
 Deployment:
-  Name: ndn-k8s-node
+  Name: ndn-k8s-example
   Image: cbmckni/ndn-tools
-  Host: false # deploy to specific host vs "random"
-  Hostname: suncave-0
-  Replicas: 1
+  NodeSelector: 
+    Enabled: false
+    Arg: "kubernetes.io/hostname: epic001.clemson.edu" 
+  Replicas: 3
   Arg: "
-    /workspace/ndn/scripts/boot.sh &&
-    /workspace/ndn/scripts/delay.sh
+    mkdir -p /workspace/ndn && \
+    apt-get update -y && apt-get install git && \
+    git clone --single-branch --branch statefulset https://github.com/cbmckni/ndn-k8s.git /workspace/ndn && \
+    /workspace/ndn/scripts/boot.sh && \
+    /workspace/ndn/scripts/delay.sh 10 && \
+    /workspace/ndn/scripts/sync.sh ndn-k8s-example
   "
 
 # EXAMPLE PRODUCER: "
@@ -47,23 +52,11 @@ Resources:
 
 
 
-# PVC Settings
+# PVC Template Settings
 
-ExistingPVC:
-  # If true, use existing PVC on local cluster.
-  Enabled: true
-  Name: genome-lake
-  Path: /workspace
-
-NewPVC:
-  # If true, create new PVC on local cluster.
-  Enabled: false
-  Name: ndn-k8s-pvc-test
-  Size: 50Gi
-  StorageClass: nfs # Make sure storage class provisioner exists!
-  Path: /workspace
-
-
+PVC:
+  StorageClass: rook-cephfs
+  Storage: 5Gi # per pod
 
 # Ingress control settings
 Ingress:
