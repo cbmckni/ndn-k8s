@@ -1,0 +1,4 @@
+k8s-igrok-06.calit2.optiputer.net
+k8s-igrok-05.calit2.optiputer.net
+k8s-igrok-02.calit2.optiputer.net
+k8s-igrok-01.calit2.optiputer.net
